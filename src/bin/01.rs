@@ -25,7 +25,28 @@ pub fn part_one(input: &str) -> Option<u64> {
 }
 
 pub fn part_two(input: &str) -> Option<u64> {
-    None
+    let (mut first_list, mut second_list): (Vec<u64>, Vec<u64>) = (vec![], vec![]);
+    // build lists
+    for line in input.lines() {
+        let mut split = line.split_whitespace();
+        let first = split.next()?.parse::<u64>().unwrap();
+        let second = split.next()?.parse::<u64>().unwrap();
+        first_list.push(first);
+        second_list.push(second);
+    }
+
+    first_list.sort();
+    second_list.sort();
+
+    let mut result = 0;
+    for first in first_list {
+        let count = second_list
+            .iter()
+            .filter(|&&second| second == first)
+            .count();
+        result += count as u64 * first;
+    }
+    Some(result)
 }
 
 #[cfg(test)]
@@ -41,6 +62,6 @@ mod tests {
     #[test]
     fn test_part_two() {
         let result = part_two(&advent_of_code::template::read_file("examples", DAY));
-        assert_eq!(result, None);
+        assert_eq!(result, Some(31));
     }
 }
