@@ -4,22 +4,18 @@ pub fn part_one(input: &str) -> Option<u64> {
     let (mut first_list, mut second_list): (Vec<u64>, Vec<u64>) = (vec![], vec![]);
     // build lists
     for line in input.lines() {
-        let mut split = line.split_whitespace();
-        let first = split.next()?.parse::<u64>().unwrap();
-        let second = split.next()?.parse::<u64>().unwrap();
-        first_list.push(first);
-        second_list.push(second);
+        let (first, second) = line.split_once("   ").unwrap();
+        first_list.push(first.parse::<u64>().unwrap());
+        second_list.push(second.parse::<u64>().unwrap());
     }
 
     first_list.sort_unstable();
     second_list.sort_unstable();
 
-    let zipped = first_list.into_iter().zip(second_list);
-
     let mut result = 0;
 
-    for (first, second) in zipped {
-        result += first.abs_diff(second);
+    for i in 0..first_list.len() {
+        result += first_list[i].abs_diff(second_list[i])
     }
     Some(result)
 }
