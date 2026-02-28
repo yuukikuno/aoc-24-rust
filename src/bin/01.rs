@@ -11,8 +11,8 @@ pub fn part_one(input: &str) -> Option<u64> {
         second_list.push(second);
     }
 
-    first_list.sort();
-    second_list.sort();
+    first_list.sort_unstable();
+    second_list.sort_unstable();
 
     let zipped = first_list.into_iter().zip(second_list);
 
