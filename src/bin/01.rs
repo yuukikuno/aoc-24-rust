@@ -4,7 +4,6 @@ advent_of_code::solution!(1);
 
 pub fn part_one(input: &str) -> Option<u64> {
     let (mut first_list, mut second_list): (Vec<u64>, Vec<u64>) = (vec![], vec![]);
-    // build lists
     for line in input.lines() {
         let (first, second) = line.split_once("   ").unwrap();
         first_list.push(first.parse::<u64>().unwrap());
@@ -24,6 +23,7 @@ pub fn part_one(input: &str) -> Option<u64> {
 
 pub fn part_two(input: &str) -> Option<u64> {
     let mut first_list: Vec<u64> = vec![];
+    // build hashmap with capacity = number of common values (roughly 50 in my input)
     let mut second_uniq: HashMap<u64, u64> = HashMap::with_capacity(50);
     for line in input.lines() {
         let (first, second) = line.split_once("   ").unwrap();
