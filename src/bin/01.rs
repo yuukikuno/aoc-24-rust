@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::HashMap;
 
 advent_of_code::solution!(1);
 
@@ -23,22 +23,24 @@ pub fn part_one(input: &str) -> Option<u64> {
 }
 
 pub fn part_two(input: &str) -> Option<u64> {
-    let (mut first_list, mut second_list): (Vec<u64>, Vec<u64>) = (vec![], vec![]);
-    // build lists
+    let mut first_list: Vec<u64> = vec![];
+    let mut second_uniq: HashMap<u64, u64> = HashMap::with_capacity(50);
     for line in input.lines() {
         let (first, second) = line.split_once("   ").unwrap();
         first_list.push(first.parse::<u64>().unwrap());
-        second_list.push(second.parse::<u64>().unwrap());
+        let second = second.parse::<u64>().unwrap();
+        second_uniq
+            .entry(second)
+            .and_modify(|e| *e += 1)
+            .or_insert(1);
+    }
+    let mut result = 0;
+    for x in first_list {
+        if let Some(count) = second_uniq.get(&x) {
+            result += count * x;
+        }
     }
 
-    let first_uniq: HashSet<u64> = HashSet::from_iter(first_list.clone());
-    let second_uniq: HashSet<u64> = HashSet::from_iter(second_list.clone());
-    let intersection = first_uniq.intersection(&second_uniq);
-    let mut result = 0;
-    for &x in intersection {
-        let count = second_list.iter().filter(|&&second| second == x).count();
-        result += count as u64 * x;
-    }
     Some(result)
 }
 
